@@ -6,5 +6,7 @@
 - Jorge Vargas González ()
 
 ##Desing Document:
+https://docs.google.com/document/d/1l2dEGZzoFRFq9dsUWuYuv79N0O5mnUpl9BagKm59XwI/edit?usp=sharing
 
-##Development log: 
+##Development log:
+https://docs.google.com/document/d/1B9MsYnXjRNWgesaT_aHCJdn2-cyCE4Nr0yE_SbYl1Fo/edit?usp=sharing
