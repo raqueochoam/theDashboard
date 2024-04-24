@@ -1,128 +1,106 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Obtener el elemento donde se mostrarán los textos centrados
+    // Obtener el elemento donde se mostrarán los textos centrados y los gráficos
     var chartArea = d3.select("#chart-area");
+    var occupancyGraphArea = d3.select("#graph-occupancy-area"); // Nueva selección
+    var downtimeGraphArea = d3.select("#graph-downtime-area"); // Nueva selección
+    var idleGraphArea = d3.select("#graph-idle-time-area"); // Nueva selección
+    var waitingGraphArea = d3.select("#graph-waiting-time-area"); // Nueva selección
 
     // Obtener los datos del JSON
     var jsonData = [
         {
             "production": 17,
-            "rejections": 2,
-            "rejection_percentage": 11.76,
+            "rejections": 0,
+            "rejection_percentage": 0.0,
+            "fix_time": 39.989999999999995,
             "delay_due_to_bottleneck": 487.38,
-            "accidents": 1,
-            "occupancy_per_workstation": [
-                18,
-                17,
-                17,
-                17,
-                17,
-                17
-            ],
-            "downtime_per_workstation": [
-                22.52,
-                0,
-                8.759999999999998,
-                1.5,
-                0,
-                0.8899999999999999
-            ],
-            "idle_time_per_workstation": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-            ],
-            "waiting_time_per_workstation": [
-                163.71789880389207,
-                217.47039653389672,
-                287.7736830467296,
-                350.2902452495745,
-                417.71097551250875,
-                487.3864236635659
-            ]
+            "accidents": 0,
+            "occupancy_per_workstation": [18, 17, 17, 17, 17, 17],
+            "downtime_per_workstation": [22.52, 0, 8.76, 1.5, 0, 0.89],
+            "idleTime_per_workstation": [0, 0, 0, 0, 0, 0],
+            "waitingTime_per_workstation": [163.72, 217.47, 287.77, 350.29, 417.71, 487.39]
         }
     ];
 
-    // Obtener los datos de occupancy_per_workstation del JSON
-    var occupancyData = jsonData[0].occupancy_per_workstation;
-    var downtimeData = jsonData[0].downtime_per_workstation;
-    var idleTimeData = jsonData[0].idle_time_per_workstation;
-    var waitingTimeData = jsonData[0].waiting_time_per_workstation;
+    // Función para crear y agregar un texto centrado al área del gráfico
+    function addCenteredText(text) {
+        var textElement = document.createElement("div");
+        textElement.textContent = text;
+        textElement.style.textAlign = "center";
+        textElement.style.fontSize = "24px";
+        textElement.style.marginTop = "20px";
+        chartArea.node().appendChild(textElement);
+    }
 
-    // Agregar los textos al elemento chart-area
-    chartArea.append("p").text("Production: " + jsonData[0].production);
-    chartArea.append("p").text("Rejections: " + jsonData[0].rejections);
-    chartArea.append("p").text("Rejection Percentage: " + jsonData[0].rejection_percentage + "%");
-    chartArea.append("p").text("Delay Due to Bottleneck: " + jsonData[0].delay_due_to_bottleneck);
-    chartArea.append("p").text("Accidents: " + jsonData[0].accidents);
+    // Mostrar los datos
+    addCenteredText("Production: " + jsonData[0].production);
+    addCenteredText("Rejections: " + jsonData[0].rejections);
+    addCenteredText("Rejection Percentage: " + jsonData[0].rejection_percentage + "%");
+    addCenteredText("Delay Due to Bottleneck: " + jsonData[0].delay_due_to_bottleneck);
+    addCenteredText("Accidents: " + jsonData[0].accidents);
 
-    // Crear SVG para el gráfico de ocupación
-    var occupancyArea = d3.select("#graph-occupancy-area").append("svg")
-        .attr("width", 400)
-        .attr("height", 400);
+    // Definir escalas y ejes comunes
+    var xScale = d3.scaleBand()
+        .domain(d3.range(6))
+        .range([0, 325])
+        .padding(0.9);
 
-    // Crear rectángulos para el gráfico de ocupación
-    var rectangles = occupancyArea.selectAll("rect")
-        .data(occupancyData);
+    var yScale = d3.scaleLinear()
+        .range([100, 0]);
 
-    rectangles.enter()
-        .append("rect")
+    var xAxis = d3.axisBottom(xScale)
+        .tickFormat((d, i) => "W" + (i + 1));
+
+    var color = d3.scaleOrdinal()
+        .domain(["occupancy", "downtime", "idleTime", "waitingTime"])
+        .range(["lightblue", "pink", "lightgreen", "yellow"]);
+
+    // Crear gráficos y ejes para cada tipo de tiempo
+    ["occupancy", "downtime", "idleTime", "waitingTime"].forEach(function(type, index) { //iterar para cada grafico
+        var data = jsonData[0][type + "_per_workstation"];
+
+        console.log("Tipo de gráfico:", type);
+        console.log("Datos:", data);
+        var yMax = d3.max(data);
+        yScale.domain([0, yMax]);
+
+        if(type == "occupancy"){
+            var svg = occupancyGraphArea.append("div").append("svg")
+            .attr("width", 400)
+            .attr("height", 400);
+        }
+        if(type == "downtime"){
+            var svg = downtimeGraphArea.append("div").append("svg")
+            .attr("width", 400)
+            .attr("height", 400);
+        }
+        if(type == "idleTime"){
+            var svg = idleGraphArea.append("div").append("svg")
+            .attr("width", 400)
+            .attr("height", 400);
+        }
+        if(type == "waitingTime"){
+            var svg = waitingGraphArea.append("div").append("svg")
+            .attr("width", 400)
+            .attr("height", 400);
+        }
+        
+
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
             .attr("x", (d, i) => i * 50 + 25)
-            .attr("y", (d, i) => 100)
-            .attr("width", (d) => d)
-            .attr("height", (d) => d * 3)
-            .attr("fill", "pink");
+            .attr("y", (d) => yScale(d))
+            .attr("width", 20)
+            .attr("height", (d) => 100 - yScale(d))
+            .attr("fill", color(type));
 
-    // Crear SVG para el gráfico de downtime
-    var downtimeArea = d3.select("#graph-downtime-area").append("svg")
-        .attr("width", 400)
-        .attr("height", 400);
+        svg.append("g")
+            .attr("transform", "translate(0, 100)")
+            .call(xAxis);
 
-    // Crear rectángulos para el gráfico de downtime
-    rectangles = downtimeArea.selectAll("rect")
-        .data(downtimeData);
-
-    rectangles.enter()
-        .append("rect")
-            .attr("x", (d, i) => i * 50 + 25)
-            .attr("y", (d, i) => 100)
-            .attr("width", (d) => d)
-            .attr("height", (d) => d * 3)
-            .attr("fill", "lightblue");
-
-    // Crear SVG para el gráfico de idle time
-    var idleTimeArea = d3.select("#graph-idle-time-area").append("svg")
-        .attr("width", 400)
-        .attr("height", 400);
-
-    // Crear rectángulos para el gráfico de idle time
-    rectangles = idleTimeArea.selectAll("rect")
-        .data(idleTimeData);
-
-    rectangles.enter()
-        .append("rect")
-            .attr("x", (d, i) => i * 50 + 25)
-            .attr("y", (d, i) => 100)
-            .attr("width", (d) => d)
-            .attr("height", (d) => d * 3)
-            .attr("fill", "lightgreen");
-
-    // Crear SVG para el gráfico de waiting time
-    var waitingTimeArea = d3.select("#graph-waiting-time-area").append("svg")
-        .attr("width", 400)
-        .attr("height", 400);
-
-    // Crear rectángulos para el gráfico de waiting time
-    rectangles = waitingTimeArea.selectAll("rect")
-        .data(waitingTimeData);
-
-    rectangles.enter()
-        .append("rect")
-            .attr("x", (d, i) => i * 50 + 25)
-            .attr("y", (d, i) => 100)
-            .attr("width", (d) => d)
-            .attr("height", (d) => d * 3)
-            .attr("fill", "lightcoral");
+        svg.append("g")
+            .call(d3.axisLeft(yScale));
+    });
 });

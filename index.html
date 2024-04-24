@@ -1,45 +1,44 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="description" content="">
-        <title>The Dashboard</title>
-        <!-- Bootstrap -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <!-- Custom styling -->
-        <link rel="stylesheet" href="css/style.css">
-    </head>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <title>The Dashboard</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    <body>
-        <h1>Results Simulation per day:</h1>
-        <!-- Bootstrap grid setup -->
-        <div class="container">
-            <div class="row">
-                <div id="chart-area"></div>
-            </div>
-            <h2>DATA PER WORKSTATION</h2>
-            <div class="row">
-                <h3>Occupancy per workstation</h3>
-                <div id="graph-occupancy-area"></div>
-            </div>
-            <div class="row">
-                <h3>Downtime per workstation</h3>
-                <div id="graph-downtime-area"></div>
-            </div>
-            <div class="row">
-                <h3>idle per workstation</h3>
-                <div id="graph-idle-time-area"></div>
-            </div>
-            <div class="row">
-                <h3>Occupancy per workstation</h3>
-                <div id="graph-waiting-time-area"></div>
-            </div>
+<body>
+    <h1>Results Simulation per day:</h1>
+    <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div id="chart-area"></div>
         </div>
+        <div class="row">
+            <h2>Occupancy per workstation</h2>
+            <div id="graph-occupancy-area"></div>
+        </div>
+        <div class="row">
+            <h2>Downtime per workstation</h2>
+            <div id="graph-downtime-area"></div>
+        </div>
+        <div class="row">
+            <h2>Idle per workstation</h2>
+            <div id="graph-idle-time-area"></div>
+        </div>
+        <div class="row">
+            <h2>Waiting time per workstation</h2>
+            <div id="graph-waiting-time-area"></div>
+        </div>
+    </div>
 
-    <!-- External JS libraries -->
-    <script src="js/d3.min.js"></script>
-    <!-- Custom JS -->
-    <script src="js/main.js"></script>
+<!-- External JS libraries -->
+<script src="js/d3.min.js"></script>
+<!-- Custom JS -->
+<script src="js/main.js"></script>
 
-    </body>
+</body>
 </html>
