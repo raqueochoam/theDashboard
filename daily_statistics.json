@@ -1,0 +1,42 @@
+[
+    {
+        "production": 16,
+        "rejections": 0,
+        "rejection_percentage": 0.0,
+        "fix_time": 47.49,
+        "delay_due_to_bottleneck": 483.64,
+        "accidents": 0,
+        "occupancy_per_workstation": [
+            17,
+            17,
+            16,
+            16,
+            16,
+            16
+        ],
+        "downtime_per_workstation": [
+            9.16,
+            0,
+            3.62,
+            3.96,
+            0,
+            7.2
+        ],
+        "idle_time_per_workstation": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "waiting_time_per_workstation": [
+            153.6452729475962,
+            218.9170398436346,
+            285.51758675470177,
+            349.5778431250241,
+            418.09292039229763,
+            483.64772929935674
+        ]
+    }
+]
