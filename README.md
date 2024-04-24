@@ -3,7 +3,7 @@
 ##Team members:
 - Raquel Magdalena Ochoa Martínez (0235324)
 - Pablo Armando Uscanga Camacho (0225717)
-- Jorge Vargas González ()
+- Jorge Vargas González (0237032)
 
 ##Design Document:
 https://docs.google.com/document/d/1l2dEGZzoFRFq9dsUWuYuv79N0O5mnUpl9BagKm59XwI/edit?usp=sharing
